@@ -3,9 +3,9 @@ package day01
 import (
 	"testing"
 
-	aocmath "aoc20-go/math"
-	"aoc20-go/testutils"
-	"aoc20-go/utils"
+	"aoc20-go/aocmath"
+	"aoc20-go/input"
+	"aoc20-go/testutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -16,32 +16,32 @@ func TestSumsTo(t *testing.T) {
 		target  int
 	}
 
-	testutils.Run(t,
+	testutil.Run(t,
 		func(in input) bool { return aocmath.SumsTo(in.numbers, in.target) },
 		[]struct {
 			Name     string
 			Input    input
 			Expected bool
 		}{
-			testutils.T("sample numbers sum to 2020", input{[]int{1721, 299}, 2020}, true),
-			testutils.T("numbers don't sum to target", input{[]int{1721, 299}, 1000}, false),
-			testutils.T("empty slice", input{[]int{}, 0}, true),
-			testutils.T("single number matches target", input{[]int{2020}, 2020}, true),
+			testutil.T("sample numbers sum to 2020", input{[]int{1721, 299}, 2020}, true),
+			testutil.T("numbers don't sum to target", input{[]int{1721, 299}, 1000}, false),
+			testutil.T("empty slice", input{[]int{}, 0}, true),
+			testutil.T("single number matches target", input{[]int{2020}, 2020}, true),
 		})
 }
 
 func TestProduct(t *testing.T) {
-	testutils.Run(t,
+	testutil.Run(t,
 		func(numbers []int) int { return aocmath.Product(numbers) },
 		[]struct {
 			Name     string
 			Input    []int
 			Expected int
 		}{
-			testutils.T("sample product calculation", []int{1721, 299}, 514579),
-			testutils.T("three numbers product", []int{979, 366, 675}, 241861950),
-			testutils.T("empty slice returns 1", []int{}, 1),
-			testutils.T("single number", []int{42}, 42),
+			testutil.T("sample product calculation", []int{1721, 299}, 514579),
+			testutil.T("three numbers product", []int{979, 366, 675}, 241861950),
+			testutil.T("empty slice returns 1", []int{}, 1),
+			testutil.T("single number", []int{42}, 42),
 		})
 }
 
@@ -113,13 +113,13 @@ func TestParseInput(t *testing.T) {
 	}{
 		{
 			name:      "sample input parsing",
-			filename:  "../input/day01-sample.in",
+			filename:  "../inputs/day01-sample.in",
 			expected:  []int{1721, 979, 366, 299, 675, 1456},
 			shouldErr: false,
 		},
 		{
 			name:      "non-existent file",
-			filename:  "../input/non-existent.in",
+			filename:  "../inputs/non-existent.in",
 			expected:  nil,
 			shouldErr: true,
 		},
@@ -127,7 +127,7 @@ func TestParseInput(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := utils.ReadIntegers(tt.filename)
+			result, err := input.ReadIntegers(tt.filename)
 
 			if tt.shouldErr {
 				assert.Error(t, err)
@@ -149,13 +149,13 @@ func TestRealInputSolutions(t *testing.T) {
 	}{
 		{
 			name:     "part 1 - two numbers sum to 2020",
-			filename: "../input/day01.in",
+			filename: "../inputs/day01.in",
 			n:        2,
 			expected: 866436,
 		},
 		{
 			name:     "part 2 - three numbers sum to 2020",
-			filename: "../input/day01.in",
+			filename: "../inputs/day01.in",
 			n:        3,
 			expected: 276650720,
 		},
@@ -163,7 +163,7 @@ func TestRealInputSolutions(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			entries, err := utils.ReadIntegers(tt.filename)
+			entries, err := input.ReadIntegers(tt.filename)
 			require.NoError(t, err, "Failed to read input file")
 
 			numbers := NSum(entries, 2020, tt.n)

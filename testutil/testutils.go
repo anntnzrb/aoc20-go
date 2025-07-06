@@ -1,4 +1,4 @@
-// Package testutils provides utilities for reducing boilerplate in table-driven tests.
+// Package testutil provides utilities for reducing boilerplate in table-driven tests.
 //
 // This package offers simple helpers to create and execute table-driven tests
 // without having to manually define struct types and iteration logic.
@@ -10,19 +10,19 @@
 //			a, b int
 //		}
 //
-//		testutils.Run(t,
+//		testutil.Run(t,
 //			func(in input) int { return in.a + in.b },
 //			[]struct {
 //				Name     string
 //				Input    input
 //				Expected int
 //			}{
-//				testutils.T("simple addition", input{2, 3}, 5),
-//				testutils.T("zero addition", input{0, 5}, 5),
-//				testutils.T("negative numbers", input{-1, 1}, 0),
+//				testutil.T("simple addition", input{2, 3}, 5),
+//				testutil.T("zero addition", input{0, 5}, 5),
+//				testutil.T("negative numbers", input{-1, 1}, 0),
 //			})
 //	}
-package testutils
+package testutil
 
 import (
 	"testing"
@@ -35,7 +35,7 @@ import (
 //
 // Example:
 //
-//	testutils.T("test name", inputValue, expectedOutput)
+//	testutil.T("test name", inputValue, expectedOutput)
 //
 // Returns a struct with Name, Input, and Expected fields that can be used
 // directly in test case slices.
@@ -62,15 +62,15 @@ func T[I, O any](name string, input I, expected O) struct {
 //
 // Example:
 //
-//	testutils.Run(t,
+//	testutil.Run(t,
 //		func(x int) int { return x * 2 },
 //		[]struct {
 //			Name     string
 //			Input    int
 //			Expected int
 //		}{
-//			testutils.T("double of 5", 5, 10),
-//			testutils.T("double of 0", 0, 0),
+//			testutil.T("double of 5", 5, 10),
+//			testutil.T("double of 0", 0, 0),
 //		})
 //
 // Each test case will be executed as a subtest using t.Run() with the provided name.

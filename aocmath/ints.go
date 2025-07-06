@@ -1,4 +1,4 @@
-package math
+package aocmath
 
 // Numeric is a constraint that permits any numeric type that supports
 // arithmetic operations (+, -, *, /). This includes all signed and unsigned

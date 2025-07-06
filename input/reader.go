@@ -1,9 +1,9 @@
-// Package utils provides utilities for common file and input processing tasks.
+// Package input provides utilities for common file and input processing tasks.
 //
 // This package contains helper functions for reading and parsing input files,
 // particularly useful for Advent of Code style problems that require reading
 // structured data from text files.
-package utils
+package input
 
 import (
 	"os"
@@ -24,7 +24,7 @@ import (
 //
 // Example:
 //
-//	lines, err := utils.ReadLines("input.txt")
+//	lines, err := input.ReadLines("input.txt")
 //	if err != nil {
 //		log.Fatal(err)
 //	}
@@ -57,7 +57,7 @@ func ReadLines(filename string) ([]string, error) {
 //
 // Example:
 //
-//	numbers, err := utils.ReadIntegers("numbers.txt")
+//	numbers, err := input.ReadIntegers("numbers.txt")
 //	if err != nil {
 //		log.Fatal(err)
 //	}
