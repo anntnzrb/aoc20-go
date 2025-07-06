@@ -1,9 +1,6 @@
 package day01
 
-import (
-	"aoc20-go/utils"
-	"strconv"
-)
+import "aoc20-go/utils"
 
 func SumsTo(a, b, target int) bool {
 	return a+b == target
@@ -22,17 +19,5 @@ func TwoSum(entries []int, target int) (int, int) {
 }
 
 func ParseInput(filename string) ([]int, error) {
-	lines, err := utils.ReadLines(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	numbers := make([]int, 0, len(lines))
-	for _, line := range lines {
-		if num, err := strconv.Atoi(line); err == nil {
-			numbers = append(numbers, num)
-		}
-	}
-
-	return numbers, nil
+	return utils.ReadIntegers(filename)
 }
