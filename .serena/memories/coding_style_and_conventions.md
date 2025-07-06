@@ -19,6 +19,12 @@
 - Create type aliases for domain concepts instead of raw primitives:
 - Think in terms of domain concepts rather than raw data types
 
+## Tool Selection Guidelines
+- **Use semantic symbol tools** for renaming types, functions, variables, methods.
+- **Use `replace_regex` only as fallback** for text-based operations that symbol tools cannot handle
+- **Preferred hierarchy**: Symbol tools → semantic search tools → `replace_regex`
+- **Key principle**: Always leverage semantic understanding of the codebase rather than treating code as plain text
+
 ## Testing Standards
 - **Use table-driven tests** for all test functions
 - Group related test cases into logical test functions
