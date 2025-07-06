@@ -2,20 +2,38 @@ package day01
 
 import "aoc20-go/utils"
 
-func SumsTo(a, b, target int) bool {
-	return a+b == target
+func SumsTo(numbers []int, target int) bool {
+	sum := 0
+	for _, num := range numbers {
+		sum += num
+	}
+	return sum == target
 }
 
-func TwoSum(entries []int, target int) (int, int) {
-	seen := make(map[int]bool)
-	for _, entry := range entries {
-		complement := target - entry
-		if seen[complement] {
-			return entry, complement
+func NSum(entries []int, target int, n int) []int {
+	if n == 1 {
+		for _, entry := range entries {
+			if entry == target {
+				return []int{entry}
+			}
 		}
-		seen[entry] = true
+		return nil
 	}
-	return 0, 0
+
+	for i, num := range entries {
+		if result := NSum(entries[i+1:], target-num, n-1); result != nil {
+			return append([]int{num}, result...)
+		}
+	}
+	return nil
+}
+
+func Product(numbers []int) int {
+	result := 1
+	for _, num := range numbers {
+		result *= num
+	}
+	return result
 }
 
 func ParseInput(filename string) ([]int, error) {

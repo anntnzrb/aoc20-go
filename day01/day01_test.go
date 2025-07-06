@@ -3,24 +3,52 @@ package day01
 import "testing"
 
 func TestSumsTo(t *testing.T) {
-	a, b, target := 1721, 299, 2020
+	numbers := []int{1721, 299}
+	target := 2020
 	expected := true
 
-	result := SumsTo(a, b, target)
+	result := SumsTo(numbers, target)
 
 	if result != expected {
-		t.Errorf("SumsTo(%d, %d, %d) = %v, want %v", a, b, target, result, expected)
+		t.Errorf("SumsTo(%v, %d) = %v, want %v", numbers, target, result, expected)
 	}
 }
 
-func TestTwoSum2020(t *testing.T) {
+func TestNSum2020(t *testing.T) {
 	entries := []int{1721, 979, 366, 299, 675, 1456}
-	expectedA, expectedB := 1721, 299
+	expected := []int{1721, 299}
 
-	a, b := TwoSum(entries, 2020)
+	result := NSum(entries, 2020, 2)
 
-	if (a != expectedA || b != expectedB) && (a != expectedB || b != expectedA) {
-		t.Errorf("TwoSum() = %d, %d, want %d, %d", a, b, expectedA, expectedB)
+	if len(result) != 2 {
+		t.Errorf("NSum() length = %d, want 2", len(result))
+	}
+
+	if (result[0] != expected[0] || result[1] != expected[1]) && (result[0] != expected[1] || result[1] != expected[0]) {
+		t.Errorf("NSum() = %v, want %v", result, expected)
+	}
+}
+
+func TestProduct(t *testing.T) {
+	numbers := []int{1721, 299}
+	expected := 514579
+
+	result := Product(numbers)
+
+	if result != expected {
+		t.Errorf("Product(%v) = %d, want %d", numbers, result, expected)
+	}
+}
+
+func TestThreeSum2020(t *testing.T) {
+	entries := []int{1721, 979, 366, 299, 675, 1456}
+	expected := 241861950
+
+	result := NSum(entries, 2020, 3)
+	product := Product(result)
+
+	if product != expected {
+		t.Errorf("Product of three numbers that sum to 2020 = %d, want %d", product, expected)
 	}
 }
 
@@ -50,11 +78,26 @@ func TestRealInput(t *testing.T) {
 		t.Fatalf("ParseInput() error = %v", err)
 	}
 
-	a, b := TwoSum(entries, 2020)
-	result := a * b
+	numbers := NSum(entries, 2020, 2)
+	result := Product(numbers)
 	expected := 866436
 
 	if result != expected {
 		t.Errorf("Product of numbers that sum to 2020 = %d, want %d", result, expected)
+	}
+}
+
+func TestRealInputThreeSum(t *testing.T) {
+	entries, err := ParseInput("../input/day01.in")
+	if err != nil {
+		t.Fatalf("ParseInput() error = %v", err)
+	}
+
+	numbers := NSum(entries, 2020, 3)
+	result := Product(numbers)
+	expected := 276650720
+
+	if result != expected {
+		t.Errorf("Product of three numbers that sum to 2020 = %d, want %d", result, expected)
 	}
 }
