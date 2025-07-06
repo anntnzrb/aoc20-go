@@ -4,145 +4,96 @@ import (
 	"testing"
 
 	aocmath "aoc20-go/math"
+	"aoc20-go/testutils"
 	"aoc20-go/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSumsTo(t *testing.T) {
-	tests := []struct {
-		name     string
-		numbers  []int
-		target   int
-		expected bool
-	}{
-		{
-			name:     "sample numbers sum to 2020",
-			numbers:  []int{1721, 299},
-			target:   2020,
-			expected: true,
-		},
-		{
-			name:     "numbers don't sum to target",
-			numbers:  []int{1721, 299},
-			target:   1000,
-			expected: false,
-		},
-		{
-			name:     "empty slice",
-			numbers:  []int{},
-			target:   0,
-			expected: true,
-		},
-		{
-			name:     "single number matches target",
-			numbers:  []int{2020},
-			target:   2020,
-			expected: true,
-		},
+	type input struct {
+		numbers []int
+		target  int
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			result := aocmath.SumsTo(tt.numbers, tt.target)
-			assert.Equal(t, tt.expected, result)
+	testutils.Run(t,
+		func(in input) bool { return aocmath.SumsTo(in.numbers, in.target) },
+		[]struct {
+			Name     string
+			Input    input
+			Expected bool
+		}{
+			testutils.T("sample numbers sum to 2020", input{[]int{1721, 299}, 2020}, true),
+			testutils.T("numbers don't sum to target", input{[]int{1721, 299}, 1000}, false),
+			testutils.T("empty slice", input{[]int{}, 0}, true),
+			testutils.T("single number matches target", input{[]int{2020}, 2020}, true),
 		})
-	}
 }
 
 func TestProduct(t *testing.T) {
-	tests := []struct {
-		name     string
-		numbers  []int
-		expected int
-	}{
-		{
-			name:     "sample product calculation",
-			numbers:  []int{1721, 299},
-			expected: 514579,
-		},
-		{
-			name:     "three numbers product",
-			numbers:  []int{979, 366, 675},
-			expected: 241861950,
-		},
-		{
-			name:     "empty slice returns 1",
-			numbers:  []int{},
-			expected: 1,
-		},
-		{
-			name:     "single number",
-			numbers:  []int{42},
-			expected: 42,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			result := aocmath.Product(tt.numbers)
-			assert.Equal(t, tt.expected, result)
+	testutils.Run(t,
+		func(numbers []int) int { return aocmath.Product(numbers) },
+		[]struct {
+			Name     string
+			Input    []int
+			Expected int
+		}{
+			testutils.T("sample product calculation", []int{1721, 299}, 514579),
+			testutils.T("three numbers product", []int{979, 366, 675}, 241861950),
+			testutils.T("empty slice returns 1", []int{}, 1),
+			testutils.T("single number", []int{42}, 42),
 		})
-	}
 }
 
 func TestNSum(t *testing.T) {
 	sampleEntries := []int{1721, 979, 366, 299, 675, 1456}
 
+	type input struct {
+		entries []int
+		target  int
+		n       int
+	}
+
 	tests := []struct {
 		name     string
-		entries  []int
-		target   int
-		n        int
+		input    input
 		expected []int
 	}{
 		{
 			name:     "two sum to 2020",
-			entries:  sampleEntries,
-			target:   2020,
-			n:        2,
+			input:    input{sampleEntries, 2020, 2},
 			expected: []int{1721, 299},
 		},
 		{
 			name:     "three sum to 2020",
-			entries:  sampleEntries,
-			target:   2020,
-			n:        3,
+			input:    input{sampleEntries, 2020, 3},
 			expected: []int{979, 366, 675},
 		},
 		{
 			name:     "one sum (target exists)",
-			entries:  sampleEntries,
-			target:   1721,
-			n:        1,
+			input:    input{sampleEntries, 1721, 1},
 			expected: []int{1721},
 		},
 		{
 			name:     "one sum (target doesn't exist)",
-			entries:  sampleEntries,
-			target:   9999,
-			n:        1,
+			input:    input{sampleEntries, 9999, 1},
 			expected: nil,
 		},
 		{
 			name:     "no solution exists",
-			entries:  []int{1, 2, 3},
-			target:   10,
-			n:        2,
+			input:    input{[]int{1, 2, 3}, 10, 2},
 			expected: nil,
 		},
 		{
 			name:     "empty entries",
-			entries:  []int{},
-			target:   2020,
-			n:        2,
+			input:    input{[]int{}, 2020, 2},
 			expected: nil,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := NSum(tt.entries, tt.target, tt.n)
+			result := NSum(tt.input.entries, tt.input.target, tt.input.n)
 			if tt.expected == nil {
 				assert.Nil(t, result)
 			} else {
@@ -155,30 +106,30 @@ func TestNSum(t *testing.T) {
 
 func TestParseInput(t *testing.T) {
 	tests := []struct {
-		name     string
-		filename string
-		expected []int
-		hasError bool
+		name      string
+		filename  string
+		expected  []int
+		shouldErr bool
 	}{
 		{
-			name:     "sample input parsing",
-			filename: "../input/day01-sample.in",
-			expected: []int{1721, 979, 366, 299, 675, 1456},
-			hasError: false,
+			name:      "sample input parsing",
+			filename:  "../input/day01-sample.in",
+			expected:  []int{1721, 979, 366, 299, 675, 1456},
+			shouldErr: false,
 		},
 		{
-			name:     "non-existent file",
-			filename: "../input/non-existent.in",
-			expected: nil,
-			hasError: true,
+			name:      "non-existent file",
+			filename:  "../input/non-existent.in",
+			expected:  nil,
+			shouldErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := utils.ReadIntegers(tt.filename)
-			
-			if tt.hasError {
+
+			if tt.shouldErr {
 				assert.Error(t, err)
 				assert.Nil(t, result)
 			} else {
@@ -214,10 +165,10 @@ func TestRealInputSolutions(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			entries, err := utils.ReadIntegers(tt.filename)
 			require.NoError(t, err, "Failed to read input file")
-			
+
 			numbers := NSum(entries, 2020, tt.n)
 			require.NotNil(t, numbers, "No solution found for %d-sum", tt.n)
-			
+
 			result := aocmath.Product(numbers)
 			assert.Equal(t, tt.expected, result)
 		})
