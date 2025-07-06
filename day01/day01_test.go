@@ -93,7 +93,7 @@ func TestNSum(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := NSum(tt.input.entries, tt.input.target, tt.input.n)
+			result := NSum(Entries(tt.input.entries), Target(tt.input.target), Count(tt.input.n))
 			if tt.expected == nil {
 				assert.Nil(t, result)
 			} else {
@@ -166,10 +166,10 @@ func TestRealInputSolutions(t *testing.T) {
 			entries, err := input.ReadIntegers(tt.filename)
 			require.NoError(t, err, "Failed to read input file")
 
-			numbers := NSum(entries, 2020, tt.n)
-			require.NotNil(t, numbers, "No solution found for %d-sum", tt.n)
+			combination := NSum(Entries(entries), Target(2020), Count(tt.n))
+			require.NotNil(t, combination, "No combination found for %d-sum", tt.n)
 
-			result := aocmath.Product(numbers)
+			result := aocmath.Product([]int(combination))
 			assert.Equal(t, tt.expected, result)
 		})
 	}
