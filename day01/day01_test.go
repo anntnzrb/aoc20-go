@@ -2,21 +2,15 @@ package day01
 
 import (
 	"testing"
-	
+
 	aocmath "aoc20-go/math"
-	"aoc20-go/utils"
+	"aoc20-go/testutils"
 )
 
 func TestSumsTo(t *testing.T) {
 	numbers := []int{1721, 299}
-	target := 2020
-	expected := true
-
-	result := aocmath.SumsTo(numbers, target)
-
-	if result != expected {
-		t.Errorf("SumsTo(%v, %d) = %v, want %v", numbers, target, result, expected)
-	}
+	result := aocmath.SumsTo(numbers, 2020)
+	testutils.AssertBool(t, result, true, "SumsTo([1721, 299], 2020)")
 }
 
 func TestNSum2020(t *testing.T) {
@@ -36,73 +30,33 @@ func TestNSum2020(t *testing.T) {
 
 func TestProduct(t *testing.T) {
 	numbers := []int{1721, 299}
-	expected := 514579
-
 	result := aocmath.Product(numbers)
-
-	if result != expected {
-		t.Errorf("Product(%v) = %d, want %d", numbers, result, expected)
-	}
+	testutils.AssertEqual(t, result, 514579, "Product([1721, 299])")
 }
 
 func TestThreeSum2020(t *testing.T) {
 	entries := []int{1721, 979, 366, 299, 675, 1456}
-	expected := 241861950
-
 	result := NSum(entries, 2020, 3)
 	product := aocmath.Product(result)
-
-	if product != expected {
-		t.Errorf("Product of three numbers that sum to 2020 = %d, want %d", product, expected)
-	}
+	testutils.AssertEqual(t, product, 241861950, "Product of three numbers that sum to 2020")
 }
 
 func TestParseInput(t *testing.T) {
+	result := testutils.MustReadSample(t, "day01")
 	expected := []int{1721, 979, 366, 299, 675, 1456}
-
-	result, err := utils.ReadIntegers("../input/day01-sample.in")
-
-	if err != nil {
-		t.Fatalf("utils.ReadIntegers() error = %v", err)
-	}
-
-	if len(result) != len(expected) {
-		t.Errorf("utils.ReadIntegers() length = %d, want %d", len(result), len(expected))
-	}
-
-	for i, v := range expected {
-		if result[i] != v {
-			t.Errorf("utils.ReadIntegers()[%d] = %d, want %d", i, result[i], v)
-		}
-	}
+	testutils.AssertSliceEqual(t, result, expected, "Sample input parsing")
 }
 
 func TestRealInput(t *testing.T) {
-	entries, err := utils.ReadIntegers("../input/day01.in")
-	if err != nil {
-		t.Fatalf("utils.ReadIntegers() error = %v", err)
-	}
-
+	entries := testutils.MustReadReal(t, "day01")
 	numbers := NSum(entries, 2020, 2)
 	result := aocmath.Product(numbers)
-	expected := 866436
-
-	if result != expected {
-		t.Errorf("Product of numbers that sum to 2020 = %d, want %d", result, expected)
-	}
+	testutils.AssertEqual(t, result, 866436, "Product of two numbers that sum to 2020")
 }
 
 func TestRealInputThreeSum(t *testing.T) {
-	entries, err := utils.ReadIntegers("../input/day01.in")
-	if err != nil {
-		t.Fatalf("utils.ReadIntegers() error = %v", err)
-	}
-
+	entries := testutils.MustReadReal(t, "day01")
 	numbers := NSum(entries, 2020, 3)
 	result := aocmath.Product(numbers)
-	expected := 276650720
-
-	if result != expected {
-		t.Errorf("Product of three numbers that sum to 2020 = %d, want %d", result, expected)
-	}
+	testutils.AssertEqual(t, result, 276650720, "Product of three numbers that sum to 2020")
 }
