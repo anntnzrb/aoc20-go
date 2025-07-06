@@ -13,3 +13,16 @@
 - Build incrementally using TDD
 - Create generic, reusable functions
 - Use meaningful function names that describe purpose
+
+## Type-Driven Development
+- Use **domain modeling with types** (semantic typing/newtype pattern)
+- Create type aliases for domain concepts instead of raw primitives:
+- Think in terms of domain concepts rather than raw data types
+
+## Testing Standards
+- **Use table-driven tests** for all test functions
+- Group related test cases into logical test functions
+- Use descriptive test names that clearly indicate what is being tested
+- Use `testify/assert` and `testify/require` for assertions
+- Aim for 100% statement coverage with edge cases
+- Keep test cases focused and atomic
